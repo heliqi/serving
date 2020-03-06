@@ -4,6 +4,7 @@
 load("@org_tensorflow//third_party:repo.bzl", "tf_http_archive")
 load("@org_tensorflow//tensorflow:workspace.bzl", "tf_workspace")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "new_git_repository")
 
 def tf_serving_workspace():
     """All TensorFlow Serving external dependencies."""
@@ -56,3 +57,19 @@ def tf_serving_workspace():
             "https://github.com/abseil/abseil-cpp/archive/36d37ab992038f52276ca66b9da80c1cf0f57dc2.tar.gz",
         ],
     )
+
+    # ===== tvm (tvm.ai) dependencies =====
+    new_git_repository(
+        name = "com_github_dmlc_tvm",
+        remote = "https://github.com/dmlc/tvm.git",
+        init_submodules = True,
+        branch = "master",
+        #branch = "v0.5",
+        build_file = "@//third_party/tvm:BUILD",
+        patches = [
+            "@//third_party/tvm:patches/graph-metadata-v7.diff"
+            #"@//third_party/tvm:patches/graph-metadata-API.diff"
+        ],
+        patch_args = ["-p1"],
+    )
+

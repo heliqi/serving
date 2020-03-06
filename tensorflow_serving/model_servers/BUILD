@@ -56,6 +56,7 @@ cc_library(
         "//tensorflow_serving/servables/tensorflow:saved_model_bundle_source_adapter_proto",
         "//tensorflow_serving/servables/tensorflow:session_bundle_config_proto",
         "//tensorflow_serving/servables/tensorflow:session_bundle_source_adapter_proto",
+        "//tensorflow_serving/servables/tvm:tvm_source_adapter_proto",
     ],
 )
 
@@ -85,6 +86,7 @@ cc_library(
         "//tensorflow_serving/servables/tensorflow:saved_model_bundle_source_adapter",
         "//tensorflow_serving/servables/tensorflow:session_bundle_source_adapter",
         "//tensorflow_serving/servables/tensorflow:session_bundle_source_adapter_proto",
+        "//tensorflow_serving/servables/tvm:tvm_source_adapter",
         "//tensorflow_serving/sources/storage_path:file_system_storage_path_source",
         "//tensorflow_serving/sources/storage_path:file_system_storage_path_source_proto",
         "//tensorflow_serving/util:event_bus",
@@ -233,6 +235,7 @@ cc_library(
         "@grpc//:grpc++",
         "@org_tensorflow//tensorflow/core:lib",
         "@org_tensorflow//tensorflow/core:protos_all_cc",
+        "//tensorflow_serving/servables/tvm:predict_impl",
     ],
 )
 
@@ -279,6 +282,7 @@ cc_library(
         "//tensorflow_serving/servables/tensorflow:get_model_metadata_impl",
         "//tensorflow_serving/servables/tensorflow:predict_impl",
         "//tensorflow_serving/servables/tensorflow:regression_service",
+        "//tensorflow_serving/servables/tvm:predict_impl",
         "//tensorflow_serving/util:json_tensor",
         "@com_google_absl//absl/strings",
         "@com_google_absl//absl/time",
@@ -309,6 +313,11 @@ TENSORFLOW_DEPS = [
     "//tensorflow_serving/servables/tensorflow:predict_impl",
 ]
 
+TVM_DEPS = [
+    "//tensorflow_serving/servables/tvm:tvm_source_adapter",
+    "//tensorflow_serving/servables/tvm:predict_impl",
+]
+
 cc_library(
     name = "server_lib",
     srcs = [
@@ -337,7 +346,7 @@ cc_library(
         "//tensorflow_serving/config:platform_config_proto",
         "//tensorflow_serving/core:availability_preserving_policy",
         "//tensorflow_serving/servables/tensorflow:session_bundle_config_proto",
-    ] + TENSORFLOW_DEPS + SUPPORTED_TENSORFLOW_OPS,
+    ] + TENSORFLOW_DEPS + TVM_DEPS + SUPPORTED_TENSORFLOW_OPS,
 )
 
 cc_library(

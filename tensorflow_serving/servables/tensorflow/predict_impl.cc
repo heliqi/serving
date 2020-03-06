@@ -24,6 +24,8 @@ limitations under the License.
 #include "tensorflow_serving/core/servable_handle.h"
 #include "tensorflow_serving/servables/tensorflow/predict_util.h"
 #include "tensorflow_serving/servables/tensorflow/util.h"
+#include "tensorflow_serving/servables/tvm/tvm_loader.h"
+#include "tensorflow_serving/servables/tvm/predict_impl.h"
 
 namespace tensorflow {
 namespace serving {
@@ -157,6 +159,16 @@ Status TensorflowPredictor::PredictWithModelSpec(const RunOptions& run_options,
                                                  const ModelSpec& model_spec,
                                                  const PredictRequest& request,
                                                  PredictResponse* response) {
+    // Handle TVM first
+  ServableHandle<TVMBundle> tvm_bundle;
+  Status status = core->GetServableHandle(model_spec, &tvm_bundle);
+  if (status.ok()) {
+	auto tvm_predictor = new TVMPredictor();
+	status = tvm_predictor->Predict(core, model_spec, request, response);
+	delete tvm_predictor;
+	return status;
+  }
+
   if (use_saved_model_) {
     ServableHandle<SavedModelBundle> bundle;
     TF_RETURN_IF_ERROR(core->GetServableHandle(model_spec, &bundle));

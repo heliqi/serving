@@ -270,6 +270,11 @@ Status Server::BuildAndStart(const Options& server_options) {
     session_bundle_config.set_use_tflite_model(server_options.use_tflite_model);
     options.platform_config_map = CreateTensorFlowPlatformConfigMap(
         session_bundle_config, use_saved_model);
+    // TVM
+    TVMConfig tvm_config;
+    tvm_config.set_session_target("tvm_target");
+    options.platform_config_map = CreateTVMPlatformConfigMap(
+        options.platform_config_map, tvm_config);
   } else {
     TF_RETURN_IF_ERROR(ParseProtoTextFile<PlatformConfigMap>(
         server_options.platform_config_file, &options.platform_config_map));

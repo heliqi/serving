@@ -13,16 +13,27 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef TENSORFLOW_SERVING_MODEL_SERVERS_MODEL_PLATFORM_TYPES_H_
-#define TENSORFLOW_SERVING_MODEL_SERVERS_MODEL_PLATFORM_TYPES_H_
+#ifndef TENSORFLOW_SERVING_SERVABLES_TVM_PREDICT_IMPL_H_
+#define TENSORFLOW_SERVING_SERVABLES_TVM_PREDICT_IMPL_H_
+
+#include "tensorflow_serving/model_servers/server_core.h"
+#include "tensorflow_serving/servables/tvm/tvm_loader.h"
+#include "tensorflow_serving/apis/predict.pb.h"
 
 namespace tensorflow {
 namespace serving {
 
-constexpr char kTensorFlowModelPlatform[] = "tensorflow";
-constexpr char kTVMModelPlatform[] = "tvm";
+// Utility methods for implementation of predict.
+// Initialized and called from Tensorflow servable.
+class TVMPredictor {
+ public:
+  TVMPredictor() = default;
+
+  Status Predict(ServerCore* core, const ModelSpec& model_spec,
+                 const PredictRequest& request, PredictResponse* response);
+};
 
 }  // namespace serving
 }  // namespace tensorflow
 
-#endif  // TENSORFLOW_SERVING_MODEL_SERVERS_MODEL_PLATFORM_TYPES_H_
+#endif  // TENSORFLOW_SERVING_SERVABLES_TVM_PREDICT_IMPL_H_

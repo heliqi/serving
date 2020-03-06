@@ -18,6 +18,7 @@ limitations under the License.
 
 #include "tensorflow_serving/config/platform_config.pb.h"
 #include "tensorflow_serving/servables/tensorflow/session_bundle_config.pb.h"
+#include "tensorflow_serving/servables/tvm/tvm_config.pb.h"
 
 namespace tensorflow {
 namespace serving {
@@ -28,6 +29,9 @@ namespace serving {
 // on 'use_saved_model' using 'session_bundle_config'.
 PlatformConfigMap CreateTensorFlowPlatformConfigMap(
     const SessionBundleConfig& session_bundle_config, bool use_saved_model);
+
+PlatformConfigMap CreateTVMPlatformConfigMap(
+    PlatformConfigMap platform_config_map, const TVMConfig& tvm_config);
 
 }  // namespace serving
 }  // namespace tensorflow

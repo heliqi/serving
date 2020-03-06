@@ -26,6 +26,8 @@ limitations under the License.
 #include "tensorflow/contrib/session_bundle/session_bundle.h"
 #include "tensorflow/core/lib/core/errors.h"
 #include "tensorflow_serving/core/servable_handle.h"
+#include "tensorflow_serving/servables/tvm/get_model_metadata_impl.h"
+
 
 namespace tensorflow {
 namespace serving {
@@ -88,8 +90,10 @@ Status GetModelMetadataImpl::GetModelMetadataWithModelSpec(
   TF_RETURN_IF_ERROR(ValidateGetModelMetadataRequest(request));
   for (const auto& metadata_field : request.metadata_field()) {
     if (metadata_field == kSignatureDef) {
-      TF_RETURN_IF_ERROR(
-          SavedModelGetSignatureDef(core, model_spec, request, response));
+      Status status = SavedModelGetSignatureDef(core, model_spec, request, response);
+      if (!status.ok()) {
+	  TF_RETURN_IF_ERROR(TVMModelGetSignatureDef(core, model_spec, request, response));
+      }
     } else {
       return tensorflow::errors::InvalidArgument(
           "MetadataField %s is not supported", metadata_field);

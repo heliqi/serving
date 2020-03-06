@@ -12,7 +12,8 @@ import "tensorflow_serving/sources/storage_path/file_system_storage_path_source.
 enum ModelType {
   MODEL_TYPE_UNSPECIFIED = 0 [deprecated = true];
   TENSORFLOW = 1 [deprecated = true];
-  OTHER = 2 [deprecated = true];
+  TVM = 2 [deprecated = true];
+  OTHER = 3 [deprecated = true];
 };
 
 // Common configuration for loading a model being served.

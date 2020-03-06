@@ -1,4 +1,4 @@
-/* Copyright 2016 Google Inc. All Rights Reserved.
+/* Copyright 2017 Google Inc. All Rights Reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,16 +13,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef TENSORFLOW_SERVING_MODEL_SERVERS_MODEL_PLATFORM_TYPES_H_
-#define TENSORFLOW_SERVING_MODEL_SERVERS_MODEL_PLATFORM_TYPES_H_
+#ifndef TENSORFLOW_SERVING_SERVABLES_TVM_GET_MODEL_METADATA_IMPL_H_
+#define TENSORFLOW_SERVING_SERVABLES_TVM_GET_MODEL_METADATA_IMPL_H_
+
+#include "tensorflow/core/lib/core/status.h"
+#include "tensorflow_serving/apis/get_model_metadata.pb.h"
+#include "tensorflow_serving/model_servers/server_core.h"
 
 namespace tensorflow {
 namespace serving {
 
-constexpr char kTensorFlowModelPlatform[] = "tensorflow";
-constexpr char kTVMModelPlatform[] = "tvm";
+Status TVMModelGetSignatureDef(
+       ServerCore* core, const ModelSpec& model_spec,
+       const GetModelMetadataRequest& request,
+       GetModelMetadataResponse* response);
 
 }  // namespace serving
 }  // namespace tensorflow
 
-#endif  // TENSORFLOW_SERVING_MODEL_SERVERS_MODEL_PLATFORM_TYPES_H_
+#endif  // TENSORFLOW_SERVING_SERVABLES_TENSORFLOW_GET_MODEL_METADATA_IMPL_H_
